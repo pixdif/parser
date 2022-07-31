@@ -31,11 +31,14 @@ module.exports = {
 			'tab',
 		],
 		'linebreak-style': 'off',
+		'no-await-in-loop': 'off',
 		'no-plusplus': 'off',
+		'no-redeclare': 'off',
 		'no-restricted-syntax': [
 			'error',
 			'WithStatement',
 		],
 		'no-tabs': 'off',
+		'no-unused-vars': 'off',
 	},
 };
