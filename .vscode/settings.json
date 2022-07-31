@@ -1,0 +1,7 @@
+{
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"files.insertFinalNewline": true,
+	"javascript.preferences.quoteStyle": "single",
+	"typescript.preferences.quoteStyle": "single"
+}
