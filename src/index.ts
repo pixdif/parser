@@ -42,9 +42,16 @@ export abstract class Parser extends EventEmitter {
 	abstract open(): Promise<number>;
 
 	/**
-	 * Convert the current part into an image.
-	 * @param index current progress
-	 * @returns image buffer
+	 * Gets the name of the nth image.
+	 * @param index image index
+	 * @returns image name
+	 */
+	abstract getName(index: number): Promise<string | undefined>;
+
+	/**
+	 * Gets a readable stream of the nth image.
+	 * @param index image index
+	 * @returns readable stream
 	 */
 	abstract getImage(index: number): Promise<Readable>;
 }
