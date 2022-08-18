@@ -3,7 +3,9 @@ import { Readable } from 'stream';
 
 import sha1 from './util/sha1';
 
-interface Parser {
+export { default as sha1 } from './util/sha1';
+
+export interface Parser {
 	on(event: 'open', listener: () => void): this;
 	on(event: 'close', listener: () => void): this;
 
@@ -17,7 +19,7 @@ interface Parser {
 	emit(event: 'close'): boolean;
 }
 
-abstract class Parser extends EventEmitter {
+export abstract class Parser extends EventEmitter {
 	protected filePath: string;
 
 	constructor(filePath: string) {
