@@ -1,33 +1,40 @@
 import fs from 'fs';
+import { Readable } from 'stream';
 
-import Parser from '../src';
+import Parser, { sha1 } from '../src';
 
 class SingleImageParser extends Parser {
-	protected async open(): Promise<number> {
-		if (fs.existsSync(this.inputPath)) {
+	async open(): Promise<number> {
+		if (fs.existsSync(this.filePath)) {
 			return 1;
 		}
 		return 0;
 	}
 
-	protected async convert(current: number): Promise<string> {
-		if (current === 0) {
-			return this.inputPath;
+	override async getName(index: number): Promise<string | undefined> {
+		if (index === 0) {
+			return this.filePath;
 		}
-		return '';
+	}
+
+	override async getImage(index: number): Promise<Readable> {
+		if (index === 0) {
+			return fs.createReadStream(this.filePath);
+		}
+		throw new Error(`Out of bound: ${index}`);
 	}
 }
 
 test('Open an image', async () => {
 	const input = 'test/sample/pixdif.png';
 	const parser = new SingleImageParser(input);
-	expect(await parser.getFingerprint()).toBe('8146e23fba5a735be6caa20aaa8e4300691a1831');
-	const files = await parser.exec();
-	expect(files).toHaveLength(1);
-	expect(files).toContain(input);
+	expect(await parser.getFingerprint()).toBe(await sha1(input));
+	const num = await parser.open();
+	expect(num).toBe(1);
 });
 
-test('Set output path', () => {
-	const parser = new SingleImageParser('n', { outputPath: 'a' });
-	expect(parser.getOutputPath()).toBe('a');
+test('Read a non-existing image', async () => {
+	const parser = new SingleImageParser('n');
+	const num = await parser.open();
+	expect(num).toBe(0);
 });
