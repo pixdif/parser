@@ -42,6 +42,11 @@ export abstract class Parser extends EventEmitter {
 	abstract open(): Promise<number>;
 
 	/**
+	 * Close the file and release resources.
+	 */
+	abstract close(): Promise<void>;
+
+	/**
 	 * Gets the name of the nth image.
 	 * @param index image index
 	 * @returns image name
