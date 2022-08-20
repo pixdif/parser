@@ -39,12 +39,29 @@ export abstract class Parser extends EventEmitter {
 	 * Open the input file.
 	 * @returns progress limit
 	 */
-	abstract open(): Promise<number>;
+	async open(): Promise<number> {
+		const pageNum = await this.openFile();
+		this.emit('open');
+		return pageNum;
+	}
 
 	/**
 	 * Close the file and release resources.
 	 */
-	abstract close(): Promise<void>;
+	async close(): Promise<void> {
+		await this.closeFile();
+		this.emit('close');
+	}
+
+	/**
+	 * Internal implementation of open().
+	 */
+	protected abstract openFile(): Promise<number>;
+
+	/**
+	 * Internal implementation of close().
+	 */
+	protected abstract closeFile(): Promise<void>;
 
 	/**
 	 * Gets the name of the nth image.
